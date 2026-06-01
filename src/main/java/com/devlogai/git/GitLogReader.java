@@ -28,20 +28,28 @@ public class GitLogReader {
      * Returns list of commits between from and to dates (inclusive).
      */
     public List<Commit> getCommits(LocalDate from, LocalDate to) throws Exception {
-        List<Commit> commits = new ArrayList<>();
-       
-            String logCommand = String.format(
-            "git log --after=\"%s\" --before=\"%s\" --format=%%H|%%an|%%cs|%%s --shortstat",
-            from.minusDays(1).toString(),
-            to.plusDays(1).toString()
-        );
+        List<Commit> commits = new ArrayList<>();      
+            
 
-        // Use appropriate shell based on OS
+        // Use appropriate method based on OS
         ProcessBuilder pb;
         String os = System.getProperty("os.name").toLowerCase();
         if (os.contains("win")) {
-            pb = new ProcessBuilder("cmd.exe", "/c", logCommand);
+           // On Windows, use git directly with arguments (no shell needed)
+            pb = new ProcessBuilder(
+                "git", "log",
+                "--after=" + from.minusDays(1),
+                "--before=" + to.plusDays(1),
+                "--format=%H|%an|%cs|%s",
+                "--shortstat"
+            );
         } else {
+            // On Unix/Linux/Mac, use bash for compatibility
+            String logCommand = String.format(
+                "git log --after=\"%s\" --before=\"%s\" --format=%%H|%%an|%%cs|%%s --shortstat",
+                from.minusDays(1).toString(),
+                to.plusDays(1).toString()
+            );            
             pb = new ProcessBuilder("bash", "-c", logCommand);
         }
         pb.directory(new File(repoPath));

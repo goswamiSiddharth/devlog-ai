@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 public class StaticSiteGenerator {
 
     private static final String DEVLOGS_DIR  = "devlogs";
-    private static final String SITE_DIR     = "docs/site";
+    private static final String SITE_DIR     = "docs";
 
     public void regenerate() throws Exception {
         File siteDir = new File(SITE_DIR);
