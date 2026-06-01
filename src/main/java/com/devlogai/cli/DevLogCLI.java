@@ -78,7 +78,7 @@ public class DevLogCLI {
         System.out.println("🌐 Regenerating static site...");
         StaticSiteGenerator site = new StaticSiteGenerator();
         site.regenerate();
-        System.out.println("✅ Site updated → docs/site/index.html");
+        System.out.println("✅ Site updated → docs/index.html");
         System.out.println("\n🔥 ForkAndFire | DevLog AI — Done!");
     }
 
