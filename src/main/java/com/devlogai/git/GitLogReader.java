@@ -29,15 +29,21 @@ public class GitLogReader {
      */
     public List<Commit> getCommits(LocalDate from, LocalDate to) throws Exception {
         List<Commit> commits = new ArrayList<>();
-
-        // Format: hash|author|date|message
-        String logCommand = String.format(
+       
+            String logCommand = String.format(
             "git log --after=\"%s\" --before=\"%s\" --format=%%H|%%an|%%cs|%%s --shortstat",
             from.minusDays(1).toString(),
             to.plusDays(1).toString()
         );
 
-        ProcessBuilder pb = new ProcessBuilder("bash", "-c", logCommand);
+        // Use appropriate shell based on OS
+        ProcessBuilder pb;
+        String os = System.getProperty("os.name").toLowerCase();
+        if (os.contains("win")) {
+            pb = new ProcessBuilder("cmd.exe", "/c", logCommand);
+        } else {
+            pb = new ProcessBuilder("bash", "-c", logCommand);
+        }
         pb.directory(new File(repoPath));
         pb.redirectErrorStream(true);
 
