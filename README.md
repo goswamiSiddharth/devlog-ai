@@ -52,7 +52,7 @@ All 100% local. All 100% open source. Zero API costs.
 📝 Generating Markdown devlog...
 ✅ Devlog saved → devlogs/2026-06-01.md
 🌐 Regenerating static site...
-✅ Site updated → docs/site/index.html
+✅ Site updated → docs/index.html
 
 🔥 ForkAndFire | DevLog AI — Done!
 ```
@@ -135,7 +135,7 @@ devlog-ai/
 │   └── model/
 │       └── Commit.java             # Commit data model
 ├── devlogs/                        # Your generated devlogs live here
-├── docs/site/                      # Static site (GitHub Pages source)
+├── docs/                          # Static site (GitHub Pages source)
 ├── .github/workflows/
 │   └── deploy-site.yml             # Auto-deploy site on push
 ├── pom.xml
@@ -195,7 +195,7 @@ Contributions are welcome! This is an open source project built for the communit
 git checkout -b feature/your-feature-name
 ```
 
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) before submitting a PR.
+
 
 ---
 
