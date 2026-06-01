@@ -12,7 +12,7 @@
     <packaging>jar</packaging>
 
     <name>DevLog AI</name>
-    <description>Open Source Standup & Progress Tracker for Solo Developers — by ForkAndFire</description>
+    <description>Open Source Standup &amp; Progress Tracker for Solo Developers — by ForkAndFire</description>
     <url>https://github.com/goswamiSiddharth/devlog-ai</url>
 
     <properties>
