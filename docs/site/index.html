@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DevLog AI — ForkAndFire</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: #0d1117;
+      color: #e6edf3;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .hero { text-align: center; padding: 40px 20px; }
+    h1 { font-size: 3rem; margin-bottom: 16px; }
+    .subtitle { color: #8b949e; font-size: 1.2rem; margin-bottom: 8px; }
+    .badge { color: #f78166; margin-bottom: 32px; font-size: 1rem; }
+    .empty-msg {
+      background: #161b22;
+      border: 1px solid #21262d;
+      border-radius: 10px;
+      padding: 32px 48px;
+      margin-bottom: 32px;
+      color: #8b949e;
+    }
+    .empty-msg code {
+      background: #21262d;
+      padding: 2px 8px;
+      border-radius: 4px;
+      color: #f0883e;
+      font-size: 0.95rem;
+    }
+    .github-btn {
+      display: inline-block;
+      background: #238636;
+      color: white;
+      text-decoration: none;
+      padding: 12px 28px;
+      border-radius: 6px;
+      font-weight: 600;
+    }
+    .github-btn:hover { background: #2ea043; }
+    footer {
+      margin-top: 40px;
+      color: #8b949e;
+      font-size: 0.85rem;
+    }
+    footer a { color: #58a6ff; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <div class="hero">
+    <h1>🔥 DevLog AI</h1>
+    <p class="subtitle">Open Source Standup &amp; Progress Tracker for Solo Developers</p>
+    <p class="badge">by <strong>ForkAndFire</strong> · sid0x03</p>
+    <div class="empty-msg">
+      <p>🚧 No devlogs yet!</p>
+      <br/>
+      <p>Run <code>java -jar devlog-ai.jar generate</code> in your project</p>
+      <p>then push to see your devlogs here.</p>
+    </div>
+    <a href="https://github.com/goswamiSiddharth/devlog-ai" class="github-btn">
+      ⭐ Star on GitHub
+    </a>
+  </div>
+  <footer>
+    🔥 DevLog AI · Open Source ·
+    <a href="https://github.com/goswamiSiddharth/devlog-ai">goswamiSiddharth/devlog-ai</a>
+  </footer>
+</body>
+</html>
