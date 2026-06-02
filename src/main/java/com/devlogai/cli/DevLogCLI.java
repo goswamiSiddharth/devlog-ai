@@ -34,6 +34,7 @@ public class DevLogCLI {
 
         switch (args[0].toLowerCase()) {
             case "generate" -> handleGenerate(args);
+            case "init"     -> new com.devlogai.cli.InitCommand().run();
             case "site"     -> handleSite();
             case "help"     -> printHelp();
             default         -> { System.out.println("❌ Unknown command: " + args[0]); printHelp(); }
@@ -132,6 +133,7 @@ public class DevLogCLI {
               generate --tag feat --issues o/r    → Combine filters!
               site                                → Rebuild static site only
               help                                → Show this help
+              init                                → Setup DevLog AI in any project
 
             🏷️  Tag examples:
               --tag feat | fix | docs | refactor | chore | test
