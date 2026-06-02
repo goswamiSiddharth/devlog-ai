@@ -145,7 +145,8 @@ public class InitCommand {
 
     private void createFile(String path, String content) throws Exception {
         File f = new File(path);
-        f.getParentFile().mkdirs();
+        File parent = f.getParentFile();
+        if (parent != null) parent.mkdirs();  // ← only mkdir if parent exists
         try (PrintWriter pw = new PrintWriter(new FileWriter(f))) {
             pw.print(content);
         }
