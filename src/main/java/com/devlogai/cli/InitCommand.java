@@ -79,8 +79,13 @@ public class InitCommand {
         System.out.println("✅ Updated .gitignore");
 
         // Step 7 — Create GitHub Actions workflow
-        createFolder(".github/workflows");
-        if (!new File(".github/workflows/devlog-deploy.yml").exists()) {
+        createFolder(".github/workflows");    
+        File workflowDir = new File(".github/workflows");
+        boolean hasWorkflow = workflowDir.exists() &&
+            workflowDir.listFiles(f -> f.getName().endsWith(".yml")) != null &&
+            workflowDir.listFiles(f -> f.getName().endsWith(".yml")).length > 0;
+
+        if (!hasWorkflow) {
             createFile(".github/workflows/devlog-deploy.yml", getWorkflowYml());
             System.out.println("✅ Created GitHub Actions workflow");
         } else {
