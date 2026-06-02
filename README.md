@@ -12,6 +12,13 @@
   <img src="https://img.shields.io/github/license/goswamiSiddharth/devlog-ai?style=for-the-badge"/>
 </p>
 
+<p align="center">
+  <a href="https://goswamisiddharth.github.io/devlog-ai">🌐 Live Demo</a> &nbsp;·&nbsp;
+  <a href="CONTRIBUTING.md">🤝 Contributing</a> &nbsp;·&nbsp;
+  <a href="CHANGELOG.md">📋 Changelog</a> &nbsp;·&nbsp;
+  <a href="community/prompts/README.md">💡 Community Prompts</a>
+</p>
+
 ---
 
 ## 🧠 The Problem
@@ -20,7 +27,7 @@ Every solo developer and open source contributor faces the same issue:
 
 - ❌ You forget what you worked on last week
 - ❌ Writing standups / progress logs is tedious
-- ❌ Your GitHub contributions graph exists but tells you *nothing* about what you actually built
+- ❌ Your GitHub contributions graph tells you *nothing* about what you actually built
 - ❌ Team standup tools exist — but **nothing exists for solo devs**
 
 ## ✅ The Solution
@@ -28,16 +35,18 @@ Every solo developer and open source contributor faces the same issue:
 **DevLog AI** is a Java CLI tool that:
 
 1. **Reads your git commits** from any local repository
-2. **Sends them to Ollama** (a free, local LLM — no API key, no cost, no cloud)
+2. **Sends them to Ollama** (free, local LLM — no API key, no cost, no cloud)
 3. **Generates a human-readable standup summary** in plain English
 4. **Outputs a beautiful Markdown devlog** saved in your repo
-5. **Builds a static website** (deployable to GitHub Pages for free)
+5. **Builds a static website** auto-deployed to GitHub Pages
+6. **Fetches open GitHub Issues** to track what's pending
+7. **Sets up any project** in one command with `devlog init`
 
 All 100% local. All 100% open source. Zero API costs.
 
 ---
 
-## 🎬 Demo
+## 🎬 Demo Output
 
 ```
 ╔═══════════════════════════════════════════╗
@@ -46,26 +55,25 @@ All 100% local. All 100% open source. Zero API costs.
 ║   Powered by Ollama (local LLM)           ║
 ╚═══════════════════════════════════════════╝
 
-📂 Reading git log from: 2026-06-01 → 2026-06-01
-✅ Found 4 commit(s)
+📂 Reading git log from: 2026-06-02 → 2026-06-02
+✅ Found 5 commit(s)
+🐛 Fetching issues from: goswamiSiddharth/devlog-ai
+✅ Fetched 3 open issue(s) from GitHub
 🤖 Sending to Ollama for summarization...
 📝 Generating Markdown devlog...
-✅ Devlog saved → devlogs/2026-06-01.md
+✅ Devlog saved → devlogs/2026-06-02.md
 🌐 Regenerating static site...
 ✅ Site updated → docs/index.html
 
 🔥 ForkAndFire | DevLog AI — Done!
 ```
 
-**Generated devlog looks like this:**
-
-> 📅 DevLog — June 01, 2026
->
-> **AI Summary:**
-> - Built the CLI entry point with command routing (generate, site, help)
-> - Implemented git log reader that parses commit stats including insertions/deletions
-> - Added Ollama integration for local AI summarization with graceful fallback
-> - Created markdown and static site generators for beautiful output
+**Generated AI Summary looks like:**
+> - Added GitHub Issues integration using public API — no token required
+> - Implemented `--tag` filter for filtering commits by conventional type
+> - Redesigned static site with stats dashboard showing total commits and lines written
+> - Fixed Windows cross-platform compatibility in git log reader
+> - Created `devlog init` command for one-shot project setup
 
 ---
 
@@ -78,7 +86,7 @@ All 100% local. All 100% open source. Zero API costs.
 | Java | 21+ | [adoptium.net](https://adoptium.net) |
 | Maven | 3.8+ | [maven.apache.org](https://maven.apache.org) |
 | Ollama | Latest | [ollama.ai](https://ollama.ai) |
-| Git | Any | Already installed? |
+| Git | Any | Pre-installed on most systems |
 
 ### Installation
 
@@ -90,14 +98,29 @@ cd devlog-ai
 # 2. Build the JAR
 mvn package
 
-# 3. Install Ollama and pull a model (one time setup)
+# 3. Install Ollama model (one time setup)
 ollama pull llama3
 
-# 4. Start Ollama (keep this running in background)
+# 4. Start Ollama (keep running in background)
 ollama serve
 ```
 
-### Usage
+### Quick Start — Use in any project
+
+```bash
+# Go to any git project
+cd your-project
+
+# Initialize DevLog AI (one time per project)
+java -jar /path/to/devlog-ai/target/devlog-ai.jar init
+
+# Generate your first devlog!
+java -jar /path/to/devlog-ai/target/devlog-ai.jar generate
+```
+
+---
+
+## 📖 Usage
 
 ```bash
 # Generate today's devlog
@@ -106,14 +129,21 @@ java -jar target/devlog-ai.jar generate
 # Generate weekly devlog (last 7 days)
 java -jar target/devlog-ai.jar generate --week
 
-# Generate from a specific date
-java -jar target/devlog-ai.jar generate --since 2026-05-25
+# Filter by commit type
+java -jar target/devlog-ai.jar generate --tag feat
+java -jar target/devlog-ai.jar generate --tag fix --week
 
-# Rebuild static site only (from existing devlogs)
+# Include open GitHub Issues
+java -jar target/devlog-ai.jar generate --issues goswamiSiddharth/devlog-ai
+
+# Full power combo!
+java -jar target/devlog-ai.jar generate --week --tag feat --issues goswamiSiddharth/devlog-ai
+
+# Setup DevLog AI in any project
+java -jar target/devlog-ai.jar init
+
+# Rebuild static site only
 java -jar target/devlog-ai.jar site
-
-# Help
-java -jar target/devlog-ai.jar help
 ```
 
 ---
@@ -124,20 +154,28 @@ java -jar target/devlog-ai.jar help
 devlog-ai/
 ├── src/main/java/com/devlogai/
 │   ├── cli/
-│   │   └── DevLogCLI.java          # CLI entry point & command routing
+│   │   ├── DevLogCLI.java           # CLI entry point & command routing
+│   │   └── InitCommand.java         # devlog init command
 │   ├── git/
-│   │   └── GitLogReader.java       # Reads & parses git log output
+│   │   ├── GitLogReader.java        # Reads & parses git log output
+│   │   └── GitHubIssuesClient.java  # Fetches open GitHub Issues
 │   ├── ollama/
-│   │   └── OllamaClient.java       # Local LLM API client
+│   │   └── OllamaClient.java        # Local LLM API client
 │   ├── generator/
-│   │   ├── MarkdownGenerator.java  # Generates .md devlog files
-│   │   └── StaticSiteGenerator.java# Generates static HTML site
+│   │   ├── MarkdownGenerator.java   # Generates .md devlog files
+│   │   └── StaticSiteGenerator.java # Generates static HTML site
 │   └── model/
-│       └── Commit.java             # Commit data model
-├── devlogs/                        # Your generated devlogs live here
-├── docs/                          # Static site (GitHub Pages source)
+│       ├── Commit.java              # Commit data model
+│       └── GitHubIssue.java         # GitHub Issue data model
+├── community/
+│   └── prompts/
+│       └── README.md                # Community prompt library
+├── devlogs/                         # Your generated devlogs
+├── docs/                            # GitHub Pages static site
 ├── .github/workflows/
-│   └── deploy-site.yml             # Auto-deploy site on push
+│   └── deploy-site.yml              # Auto-deploy to GitHub Pages
+├── CHANGELOG.md                     # Version history
+├── CONTRIBUTING.md                  # How to contribute
 ├── pom.xml
 └── README.md
 ```
@@ -146,14 +184,11 @@ devlog-ai/
 
 ## 🌐 GitHub Pages Deployment
 
-Once you push your devlogs:
+1. Push your repo to GitHub
+2. Go to **Settings → Pages → Source → GitHub Actions**
+3. Your devlog site is live at: `https://YOUR_USERNAME.github.io/devlog-ai`
 
-1. Go to your repo → **Settings → Pages**
-2. Source: **Deploy from branch**
-3. Branch: `main` / Folder: `/docs`
-4. Your devlog site is live at: `https://goswamiSiddharth.github.io/devlog-ai`
-
-The GitHub Actions workflow auto-regenerates the site every time you push new devlogs!
+The workflow auto-deploys every time you push! ✅
 
 ---
 
@@ -161,7 +196,7 @@ The GitHub Actions workflow auto-regenerates the site every time you push new de
 
 | Environment Variable | Default | Description |
 |---------------------|---------|-------------|
-| `DEVLOG_MODEL` | `llama3` | Ollama model to use (try `mistral`, `phi3`, `gemma2`) |
+| `DEVLOG_MODEL` | `llama3` | Ollama model (try `mistral`, `phi3`, `gemma2`) |
 
 ```bash
 # Use a different model
@@ -170,32 +205,48 @@ DEVLOG_MODEL=mistral java -jar target/devlog-ai.jar generate
 
 ---
 
+## 💡 Community Prompts
+
+Want a different summary style? Check out our [Community Prompts Library](community/prompts/README.md)!
+
+Includes prompts for:
+- 🐦 Tweet-style build-in-public updates
+- 🔧 Technical deep dives
+- 👔 Manager-friendly summaries
+- 📖 Learning journal entries
+- 🔄 Weekly retrospectives
+- 📋 Changelog entries
+
+---
+
 ## 🗺️ Roadmap
 
 - [x] Git log reader with diff stats
 - [x] Ollama AI summarization
-- [x] Markdown devlog generation
-- [x] Static site generator
+- [x] `--tag` commit filter
+- [x] GitHub Issues integration
+- [x] `devlog init` command
+- [x] Static site with stats dashboard
 - [x] GitHub Pages auto-deploy
-- [ ] `--tag` support to filter commits by keyword
-- [ ] Jira / Linear integration
-- [ ] GitHub Issues integration
-- [ ] Weekly email digest
+- [x] Community prompts library
 - [ ] VS Code extension
 - [ ] Brew / npm global install
+- [ ] Weekly email digest
+- [ ] GitLab / Bitbucket support
 
 ---
 
 ## 🤝 Contributing
 
-Contributions are welcome! This is an open source project built for the community.
+Contributions are welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
 ```bash
-# Fork → Clone → Branch → PR
 git checkout -b feature/your-feature-name
+# make changes
+git commit -m "feat: your feature"
+git push origin feature/your-feature-name
+# open PR!
 ```
-
-
 
 ---
 
@@ -207,5 +258,6 @@ MIT License — see [LICENSE](LICENSE) for details.
 
 <p align="center">
   Built with ❤️ by <strong>ForkAndFire</strong> · sid0x03<br/>
-  Open Source Hackathon 2026 · Elite Coders × JB Institute of Engineering and Technology
+  Open Source Hackathon 2026 · Elite Coders × JB Institute of Engineering and Technology<br/>
+  <a href="https://goswamisiddharth.github.io/devlog-ai">🌐 Live Site</a>
 </p>
