@@ -48,6 +48,14 @@ public class StaticSiteGenerator {
     private int extractTotalCommits(List<File> devlogs) {
         int total = 0;
         for (File f : devlogs) {
+
+            String name = f.getName().replace(".md", "");
+            // Only count plain daily devlogs e.g. 2026-06-02.md
+            if (name.matches(".*-[a-z]+$")) continue;
+            
+            // Skip weekly devlogs to avoid double counting
+            
+            if (f.getName().startsWith("week-")) continue;
             try {
                 String content = Files.readString(f.toPath());
                 for (String line : content.split("\n")) {
@@ -64,6 +72,12 @@ public class StaticSiteGenerator {
     private int extractTotalLines(List<File> devlogs) {
         int total = 0;
         for (File f : devlogs) {
+            
+            String name = f.getName().replace(".md", "");            
+            if (name.matches(".*-[a-z]+$")) continue;
+            
+            if (f.getName().startsWith("week-")) continue;
+            
             try {
                 String content = Files.readString(f.toPath());
                 for (String line : content.split("\n")) {
