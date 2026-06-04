@@ -75,7 +75,7 @@ public class StaticSiteGenerator {
     private String detectTag(String filename) {
         String[] parts = filename.replace(".md", "").split("-");
         String last = parts[parts.length - 1];
-        return Set.of("feat","fix","docs","refactor","chore","test").contains(last) ? last : null;
+        return Set.of("feat","fix","docs","refactor","chore","test","issue").contains(last) ? last : null;
     }
 
     private String tagColor(String tag) {
@@ -84,6 +84,7 @@ public class StaticSiteGenerator {
             case "feat" -> "#3fb950"; case "fix" -> "#f85149";
             case "docs" -> "#58a6ff"; case "refactor" -> "#d2a8ff";
             case "chore" -> "#8b949e"; case "test" -> "#ffa657";
+            case "issue"    -> "#f778ba";
             default -> "#58a6ff";
         };
     }
