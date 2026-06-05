@@ -38,8 +38,8 @@ public class GitLogReader {
            // On Windows, use git directly with arguments (no shell needed)
             pb = new ProcessBuilder(
                 "git", "log",
-                "--since=" + from + "00:00:00",
-                "--until=" + to + "23:59:59",
+                "--after=" + from.minusDays(1),
+                "--before=" + to.plusDays(1),
                 "--format=%H|%an|%cs|%s",
                 "--shortstat"
             );
@@ -67,6 +67,11 @@ public class GitLogReader {
             if (line.isEmpty()) continue;
 
             if (line.contains("|")) {
+                // If we already have a pending commit with no stats, save it first
+                if (currentMeta != null) {
+                    Commit commit = parseCommit(currentMeta, "");
+                    if (commit != null) commits.add(commit);
+                }
                 // This is a commit metadata line
                 currentMeta = line;
             } else if (currentMeta != null && line.contains("changed")) {

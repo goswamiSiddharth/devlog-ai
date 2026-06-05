@@ -1,0 +1,10 @@
+d816860a9e175c7594deb91deec318e821bedca2|Siddharth Goswami|2026-06-05|fix: use exact --since/--until time range for git log on  Windows
+
+ 5 files changed, 24 insertions(+), 24 deletions(-)
+cfbd78739cffa8abb5270e87b6f120867b6f1f4e|Siddharth Goswami|2026-06-05|issue: tracking open GitHub issues - VS Code extension, GitLab support, email digest
+c0ed30335f76b4cb9b650d30efa40c654ab8a9a6|Siddharth Goswami|2026-06-05|feat: add issue tag color pink, update repo description and topics
+
+ 8 files changed, 230 insertions(+), 23 deletions(-)
+0f613f25a8591a84405b0a9c4e48f76f7081fe55|Siddharth Goswami|2026-06-04|fix: restore clean working StaticSiteGenerator with correct stats
+
+ 12 files changed, 302 insertions(+), 1146 deletions(-)
