@@ -66,7 +66,7 @@ public class DevLogCLI {
         List<Commit> commits = reader.getCommits(from, to);
 
         if (tag != null) {
-            final String t = tag;
+            final String t = tag;            
             commits = commits.stream()
                 .filter(c -> c.getMessage().toLowerCase().startsWith(t))
                 .toList();

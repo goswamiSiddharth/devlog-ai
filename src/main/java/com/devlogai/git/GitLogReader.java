@@ -38,8 +38,8 @@ public class GitLogReader {
            // On Windows, use git directly with arguments (no shell needed)
             pb = new ProcessBuilder(
                 "git", "log",
-                "--after=" + from.minusDays(1),
-                "--before=" + to.plusDays(1),
+                "--since=" + from + "00:00:00",
+                "--until=" + to + "23:59:59",
                 "--format=%H|%an|%cs|%s",
                 "--shortstat"
             );
